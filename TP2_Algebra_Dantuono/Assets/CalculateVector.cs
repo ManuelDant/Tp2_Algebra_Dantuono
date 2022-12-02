@@ -23,6 +23,16 @@ public class CalculateVector : MonoBehaviour
 
         Gizmos.DrawLine(transform.position, transform.position + vectorCross);
     }
+
+    //https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Math/Vector3.cs
+    //Linea 215
+    public static Vector3 ProductCrossVector3(Vector3 Vector1, Vector3 Vector2)
+    {
+        return new Vector3(
+            Vector1.y * Vector2.z - Vector1.z * Vector2.y,
+            Vector1.z * Vector2.x - Vector1.x * Vector2.z,
+            Vector1.x * Vector2.y - Vector1.y * Vector2.x);
+    }
     void Start()
     {
         random = Random.Range(1, 3); //Random para elegir un eje y rotarlo 90 grados respecto al primer vector.
@@ -38,6 +48,8 @@ public class CalculateVector : MonoBehaviour
         {
             vectorRotated = new Vector3(vector.x, vector.y, -vector.z);
         }
+
+        vectorCross = ProductCrossVector3(vector, vectorRotated); //Producto perpendicular respecto a los otros dos vectores
     }
 
     void Update()
