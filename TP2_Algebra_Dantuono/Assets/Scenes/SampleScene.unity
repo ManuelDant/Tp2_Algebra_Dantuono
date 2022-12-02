@@ -152,9 +152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e92339b8f9447d46b38ef9eb2e1a0d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vector: {x: 5, y: 5, z: 5}
+  vector: {x: 10, y: 4, z: 7}
   vectorRotated: {x: 0, y: 0, z: 0}
   vectorCross: {x: 0, y: 0, z: 0}
+  vectorRotatedCut: {x: 0, y: 0, z: 0}
+  vectorCrossCut: {x: 0, y: 0, z: 0}
 --- !u!4 &433150776
 Transform:
   m_ObjectHideFlags: 0
