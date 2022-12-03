@@ -9,8 +9,8 @@ public class CalculateVector : MonoBehaviour
     [SerializeField] Vector3 vectorCross;
 
     //Vectores Cortados
-    [SerializeField] Vector3 vectorRotatedCut;
-    [SerializeField] Vector3 vectorCrossCut;
+    Vector3 vectorRotatedCut;
+    Vector3 vectorCrossCut;
 
     //Random para determinar que eje es rotado
     int random;
@@ -146,11 +146,35 @@ public class CalculateVector : MonoBehaviour
         vectorCrossCut = VectorsCuts(Vector, VectorCross, axisVector);
     }
 
-    Vector3 VectorsCuts(Vector3 origin, Vector3 vectorCut, Axis axis)
+    Vector3 VectorsCuts(Vector3 vectorCutted, Vector3 vectorToCut, Axis axis)
     {
+        Vector3 VectorCutted;
+        float vectorX;
+        float vectorY;
+        float vectorZ;
 
-        Vector3 VectorCutted = new Vector3();
-       
+        if (axis == Axis.X)
+        {
+            //Realiza los cortes de los ejes con mayor distancia y crea un nuevo vector con los nuevos ejes cortados manteniendo el eje mas corto.
+
+            //Reposiciona los ejes dividendo el eje cortado por los tangentes de los cotangentes de los otros ejes para que se haga los cortes sin moverlos
+            //de su posicion inicial.
+            vectorY = vectorCutted.x / System.MathF.Tan(System.MathF.Atan(vectorToCut.x / vectorToCut.y));
+            vectorZ = vectorCutted.x / System.MathF.Tan(System.MathF.Atan(vectorToCut.x / vectorToCut.z));
+            VectorCutted = new Vector3(vectorCutted.x, vectorY, vectorZ);
+        }
+        else if (axis == Axis.Y)
+        {
+            vectorX = vectorCutted.y / System.MathF.Tan(System.MathF.Atan(vectorToCut.y / vectorToCut.x));
+            vectorZ = vectorCutted.y / System.MathF.Tan(System.MathF.Atan(vectorToCut.y / vectorToCut.z));
+            VectorCutted = new Vector3(vectorX, vectorCutted.y, vectorZ);
+        }
+        else
+        {
+            vectorY = vectorCutted.z / System.MathF.Tan(System.MathF.Atan(vectorToCut.z / vectorToCut.y));
+            vectorX = vectorCutted.z / System.MathF.Tan(System.MathF.Atan(vectorToCut.z / vectorToCut.x));
+            VectorCutted = new Vector3(vectorX, vectorY, vectorCutted.z);
+        }    
         return VectorCutted;
     }
     void Update()
