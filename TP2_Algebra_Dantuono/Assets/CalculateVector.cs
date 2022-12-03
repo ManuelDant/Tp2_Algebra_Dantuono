@@ -7,6 +7,7 @@ public class CalculateVector : MonoBehaviour
     [SerializeField] Vector3 vector;
     [SerializeField] Vector3 vectorRotated;
     [SerializeField] Vector3 vectorCross;
+    [SerializeField] float AreaPyramid;
 
     //Vectores Cortados
     Vector3 vectorRotatedCut;
@@ -15,7 +16,7 @@ public class CalculateVector : MonoBehaviour
     //Random para determinar que eje es rotado
     int random;
 
-    private void OnDrawGizmos() //Printea las lineas en Unity
+    private void OnDrawGizmos()
     {
         //Vector normales
         Gizmos.color = Color.blue;
@@ -41,6 +42,12 @@ public class CalculateVector : MonoBehaviour
         Gizmos.color = Color.cyan;
 
         Gizmos.DrawLine(transform.position, transform.position + vectorCrossCut);
+        
+        //Muestra la base de la piramide 
+        Gizmos.DrawLine(vector, -vector + vectorRotatedCut * 2);
+        Gizmos.DrawLine(vectorRotatedCut, -vectorRotatedCut + vectorCrossCut * 2);
+        Gizmos.DrawLine(vectorCrossCut, -vectorCrossCut + vector * 2);
+
     }
 
     //https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Math/Vector3.cs
@@ -144,6 +151,8 @@ public class CalculateVector : MonoBehaviour
 
         vectorRotatedCut = VectorsCuts(Vector, VectorRotated, axisVector);
         vectorCrossCut = VectorsCuts(Vector, VectorCross, axisVector);
+
+        AreaPyramid = AreaOfPyramid(Vector, VectorRotated, vectorCrossCut);
     }
 
     Vector3 VectorsCuts(Vector3 vectorCutted, Vector3 vectorToCut, Axis axis)
@@ -177,8 +186,26 @@ public class CalculateVector : MonoBehaviour
         }    
         return VectorCutted;
     }
-    void Update()
+
+    float AreaOfPyramid(Vector3 vector1, Vector3 vector2, Vector3 vector3)
     {
-        
+        float totalSurface = AreaOfTriangle(vector1, vector2) + AreaOfTriangle(vector1, vector3) + AreaOfTriangle(vector3, vector2);
+
+        return totalSurface;
+    }
+
+    float AreaOfTriangle(Vector3 vector1, Vector3 vector2)
+    {
+        //https://byjus.com/jee/how-to-find-the-area-of-a-triangle-using-vectors/#:~:text=How%20do%20you%20find%20the,vectors%20and%20divide%20by%202.
+        //Para encontrar el tercer vector hay que realizar producto cruz y dividirlo por 2.
+        Vector3 vector3;
+        vector3 = ProductCrossVector3(vector1, vector2) / 2;
+       
+        //Pitagoras para la base y altura del triangulo.
+        float baseOfTriangle = System.MathF.Sqrt(System.MathF.Pow(vector2.x - vector1.x, 2) + System.MathF.Pow(vector2.y - vector1.y, 2) + System.MathF.Pow(vector2.z - vector1.z, 2));
+        float heightOfTriangle = System.MathF.Sqrt(System.MathF.Pow(vector3.x, 2) + System.MathF.Pow(vector3.y, 2) + System.MathF.Pow(vector3.z, 2));
+       
+        //Calcular area del triangulo con base * altura / 2;
+        return baseOfTriangle * heightOfTriangle / 2;
     }
 }
