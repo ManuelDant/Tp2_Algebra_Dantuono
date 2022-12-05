@@ -18,7 +18,7 @@ public class CalculateVector : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Vector normales
+        //Vectores normales
         Gizmos.color = Color.blue;
 
         Gizmos.DrawLine(transform.position, transform.position + vector);
@@ -49,7 +49,7 @@ public class CalculateVector : MonoBehaviour
         Gizmos.DrawLine(vectorCrossCut, -vectorCrossCut + vector * 2);
 
     }
-
+    //link donde hice el Producto Cruz
     //https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Math/Vector3.cs
     //Linea 215
     public static Vector3 ProductCrossVector3(Vector3 Vector1, Vector3 Vector2)
@@ -148,11 +148,12 @@ public class CalculateVector : MonoBehaviour
             }
             axisVector = Axis.Z;  
         }
-
+        //Cortar los vectores a la distancia mas corta.
         vectorRotatedCut = VectorsCuts(Vector, VectorRotated, axisVector);
         vectorCrossCut = VectorsCuts(Vector, VectorCross, axisVector);
 
-        AreaPyramid = AreaOfPyramid(Vector, VectorRotated, vectorCrossCut);
+        //Calcular el area de la piramide
+        AreaPyramid = AreaOfPyramid(Vector, vectorRotatedCut, vectorCrossCut);
     }
 
     Vector3 VectorsCuts(Vector3 vectorCutted, Vector3 vectorToCut, Axis axis)
@@ -187,13 +188,6 @@ public class CalculateVector : MonoBehaviour
         return VectorCutted;
     }
 
-    float AreaOfPyramid(Vector3 vector1, Vector3 vector2, Vector3 vector3)
-    {
-        float totalSurface = AreaOfTriangle(vector1, vector2) + AreaOfTriangle(vector1, vector3) + AreaOfTriangle(vector3, vector2);
-
-        return totalSurface;
-    }
-
     float AreaOfTriangle(Vector3 vector1, Vector3 vector2)
     {
         //https://byjus.com/jee/how-to-find-the-area-of-a-triangle-using-vectors/#:~:text=How%20do%20you%20find%20the,vectors%20and%20divide%20by%202.
@@ -207,5 +201,13 @@ public class CalculateVector : MonoBehaviour
        
         //Calcular area del triangulo con base * altura / 2;
         return baseOfTriangle * heightOfTriangle / 2;
+    }
+
+    float AreaOfPyramid(Vector3 vector1, Vector3 vector2, Vector3 vector3)
+    {
+        //Suma de los lados para obtener el area de la piramide
+        float fullAreaOfPyramid = AreaOfTriangle(vector1, vector2) + AreaOfTriangle(vector3, vector2) + AreaOfTriangle(vector3, vector1);
+
+        return fullAreaOfPyramid;
     }
 }
