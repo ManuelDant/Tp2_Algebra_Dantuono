@@ -1,1 +1,3 @@
-# Tp2_Algebra_Dantuono
+# Tp2_Algebra
+
+Integrante: Manuel Dantuono
