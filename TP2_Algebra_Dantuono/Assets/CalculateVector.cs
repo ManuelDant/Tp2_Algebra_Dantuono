@@ -9,6 +9,7 @@ public class CalculateVector : MonoBehaviour
     [SerializeField] Vector3 vectorCross;
     [SerializeField] float AreaPyramid;
 
+
     //Vectores Cortados
     Vector3 vectorRotatedCut;
     Vector3 vectorCrossCut;
@@ -36,19 +37,30 @@ public class CalculateVector : MonoBehaviour
         Gizmos.color = Color.cyan;
 
         Gizmos.DrawLine(transform.position, transform.position + vector);
+
         Gizmos.color = Color.cyan;
 
         Gizmos.DrawLine(transform.position, transform.position + vectorRotatedCut);
+
         Gizmos.color = Color.cyan;
 
         Gizmos.DrawLine(transform.position, transform.position + vectorCrossCut);
-        
+
         //Muestra la base de la piramide 
+        Gizmos.color = Color.cyan;
+
         Gizmos.DrawLine(vector, -vector + vectorRotatedCut * 2);
+
+        Gizmos.color = Color.cyan;
+
         Gizmos.DrawLine(vectorRotatedCut, -vectorRotatedCut + vectorCrossCut * 2);
+
+        Gizmos.color = Color.cyan;
+
         Gizmos.DrawLine(vectorCrossCut, -vectorCrossCut + vector * 2);
 
     }
+
     //link donde hice el Producto Cruz
     //https://github.com/Unity-Technologies/UnityCsReference/blob/master/Runtime/Export/Math/Vector3.cs
     //Linea 215
@@ -80,7 +92,11 @@ public class CalculateVector : MonoBehaviour
         DistanceCalculator(vector,vectorRotated,vectorCross); //Calcula la menor distancia entre los 3 vectores.
     }
 
-    enum Axis { X, Y, Z }
+    enum Axis {
+        X,
+        Y,
+        Z }
+
     Axis axisVector;
     Axis axis;
     public void DistanceCalculator(Vector3 Vector, Vector3 VectorRotated, Vector3 VectorCross)
@@ -95,13 +111,13 @@ public class CalculateVector : MonoBehaviour
         //Metodo Burbuja para ordenar la distancia de los ejes de Mayor a Menor.
         //https://stackoverflow.com/questions/14768010/simple-bubble-sort-c-sharp
 
-        if ((Vectors[0].x >= 0 && Vectors[1].x >= 0 && Vectors[2].x >= 0) || (Vectors[0].x < 0 && Vectors[1].x < 0 & Vectors[2].x < 0))
+        if (Vectors[2].x >= 0 && Vectors[1].x >= 0 && Vectors[0].x >= 0)
         { //Eje X
             for (int i = 0; i < Vectors.Length - 1; i++)
             {
                 for (int j = 0; j < Vectors.Length - i - 1; j++)
                 {
-                    if (System.MathF.Abs(Vectors[j].x) > System.MathF.Abs(Vectors[j + 1].x))
+                    if ((Vectors[j].x) > (Vectors[j + 1].x))
                     {
                         Vector3 aux = Vectors[j + 1];
                         Vectors[j + 1] = Vectors[j];
@@ -113,13 +129,13 @@ public class CalculateVector : MonoBehaviour
         }
 
         //Eje Y
-        if ((Vectors[0].y >= 0 && Vectors[1].y >= 0 && Vectors[2].y >= 0) || (Vectors[0].y < 0 && Vectors[1].y < 0 & Vectors[2].y < 0))
+        if (Vectors[2].y >= 0 && Vectors[1].y >= 0 && Vectors[0].y >= 0)
         { 
             for (int i = 0; i < Vectors.Length - 1; i++)
             {
                 for (int j = 0; j < Vectors.Length - i - 1; j++)
                 {
-                    if (System.MathF.Abs(Vectors[j].y) > System.MathF.Abs(Vectors[j + 1].y))
+                    if ((Vectors[j].y) > (Vectors[j + 1].y))
                     {
                         Vector3 aux = Vectors[j + 1];
                         Vectors[j + 1] = Vectors[j];
@@ -132,13 +148,13 @@ public class CalculateVector : MonoBehaviour
         }
 
         //Eje Z
-        if ((Vectors[0].z >= 0 && Vectors[1].z >= 0 && Vectors[2].z >= 0) || (Vectors[0].z < 0 && Vectors[1].z < 0 & Vectors[2].z < 0))
+        if (Vectors[2].z >= 0 && Vectors[1].z >= 0 && Vectors[0].z >= 0)
         { 
             for (int i = 0; i < Vectors.Length - 1; i++)
             {
                 for (int j = 0; j < Vectors.Length - i - 1; j++)
                 {
-                    if (System.MathF.Abs(Vectors[j].z) > System.MathF.Abs(Vectors[j + 1].z))
+                    if ((Vectors[j].z) > (Vectors[j + 1].z))
                     {
                         Vector3 aux = Vectors[j + 1];
                         Vectors[j + 1] = Vectors[j];
@@ -166,7 +182,7 @@ public class CalculateVector : MonoBehaviour
         if (axis == Axis.X)
         {
             //Realiza los cortes de los ejes con mayor distancia y crea un nuevo vector con los nuevos ejes cortados manteniendo el eje mas corto.
-
+            //
             //Reposiciona los ejes dividendo el eje cortado por los tangentes de los cotangentes de los otros ejes para que se haga los cortes sin moverlos
             //de su posicion inicial.
             vectorY = vectorCutted.x / System.MathF.Tan(System.MathF.Atan(vectorToCut.x / vectorToCut.y));
@@ -188,7 +204,7 @@ public class CalculateVector : MonoBehaviour
         return VectorCutted;
     }
 
-    float AreaOfTriangle(Vector3 vector1, Vector3 vector2)
+    public float AreaOfTriangle(Vector3 vector1, Vector3 vector2)
     {
         //https://byjus.com/jee/how-to-find-the-area-of-a-triangle-using-vectors/#:~:text=How%20do%20you%20find%20the,vectors%20and%20divide%20by%202.
         //Para encontrar el tercer vector hay que realizar producto cruz y dividirlo por 2.
@@ -203,7 +219,7 @@ public class CalculateVector : MonoBehaviour
         return baseOfTriangle * heightOfTriangle / 2;
     }
 
-    float AreaOfPyramid(Vector3 vector1, Vector3 vector2, Vector3 vector3)
+    public float AreaOfPyramid(Vector3 vector1, Vector3 vector2, Vector3 vector3)
     {
         //Suma de los lados para obtener el area de la piramide
         float fullAreaOfPyramid = AreaOfTriangle(vector1, vector2) + AreaOfTriangle(vector3, vector2) + AreaOfTriangle(vector3, vector1);
